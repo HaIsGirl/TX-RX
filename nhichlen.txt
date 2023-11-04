@@ -1,0 +1,30 @@
+Để xe nhích lên phía trước một chút khi nhấn nút trên cầnstick,có thể thêm đoạn code sau vào hàm loop():
+
+if(digitalRead(buttonPin) == HIGH){
+
+// Chạy động cơ ở tốc độ thấp
+motorSpeedA = 50;
+motorSpeedB = 50;
+
+// Thiết lập chiều quay động cơ về phía trước
+digitalWrite(in1, LOW);
+digitalWrite(in2, HIGH);
+digitalWrite(in3, LOW);
+digitalWrite(in4, HIGH);
+
+// Chạy trong 0.5 giây
+delay(500);
+
+// Dừng động cơ
+motorSpeedA = 0;
+motorSpeedB = 0;
+}
+
+Trong đó:
+
+buttonPin là chân kết nối với nút nhấn trên cầnstick
+Tốc độ động cơ được đặt ở mức thấp 50 để xe chỉ nhích từ từ
+Thiết lập chiều quay động cơ bằng các chân in1, in2, in3, in4
+Delay 0.5 giây để xe chạy trong thời gian ngắn
+Sau đó dừng động cơ bằng cách gán motorSpeed = 0
+Như vậy xe sẽ nhích lên phía trước một đoạn ngắn khi nhấn nút trên cầnstick. Bạn có thể chỉnh thời gian delay để điều chỉnh khoảng cách nhích.

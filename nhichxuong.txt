@@ -1,0 +1,37 @@
+Để xe nhích xuống phía sau khi nhấn nút trên cầnstick, ta chỉ cần thay đổi chiều quay của động cơ trong đoạn code trên:
+
+if(digitalRead(buttonPin) == HIGH){
+
+// Chạy động cơ ở tốc độ thấp
+motorSpeedA = 50;
+motorSpeedB = 50;
+
+// Thiết lập chiều quay động cơ về phía sau
+digitalWrite(in1, HIGH);
+digitalWrite(in2, LOW);
+digitalWrite(in3, HIGH);
+digitalWrite(in4, LOW);
+
+delay(500);
+
+// Dừng động cơ
+motorSpeedA = 0;
+motorSpeedB = 0;
+
+}
+
+Cụ thể, thay vì:
+
+digitalWrite(in1, LOW);
+digitalWrite(in2, HIGH);
+
+Ta sẽ đảo ngược chiều quay:
+
+digitalWrite(in1, HIGH);
+digitalWrite(in2, LOW);
+
+Tương tự với in3 và in4.
+
+Như vậy xe sẽ nhích xuống phía sau thay vì lên phía trước. Phần còn lại của code không thay đổi.
+
+Bằng cách điều chỉnh chiều quay của 2 động cơ, bạn có thể dễ dàng điều khiển xe di chuyển theo 4 hướng trên, xuống, trái, phải khi nhấn các nút trên cầnstick.
