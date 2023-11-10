@@ -14,7 +14,7 @@
   #define in4 2 //Chân hướng quay động cơ 4
 
   // Khởi tạo đối tượng radio
-  RF24 radio(7, 13); // Chân CE, CSN
+  RF24 radio(13,11); // Chân CE, CSN
 
   // Địa chỉ cho giao tiếp radio
   const byte address[6] = "00001";
@@ -44,8 +44,11 @@
     Serial.begin(9600);
     //Kiểm tra giao tiếp radio
     if (!radio.begin()){
-      Serial.write("Module không khởi động được...!");
+      Serial.println("Module không khởi động được...!");
       while (1){}
+    }
+    else{
+      Serial.println("Module khoi dong hoan tat");
     }
     // Khởi động giao tiếp radio
     radio.begin();
@@ -58,6 +61,9 @@
     if (!radio.available()){
       Serial.println("Chưa kết nối được với TX");
       Serial.println("CHỜ KẾT NỐI !");
+    }
+    else{
+      Serial.println("Kết nối hoàn tất");
     }
   }
 

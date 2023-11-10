@@ -9,7 +9,7 @@ CODE NÀY DÙNG ĐỂ ĐIỀU KHIỂN XE BẰNG JOYSTICK THÔNG QUA MODULE RF24
 
 // 2. Khởi tạo đối tượng radio để điều khiển module RF24 
 //    - Đấu nối tới chân CE và CSN của module RF24
-RF24 radio(7,13); 
+RF24 radio(7,8); 
 
 // 3. Đặt địa chỉ kết nối giữa 2 module RF24
 //    - Địa chỉ càng ngắn thì tốc độ kết nối càng nhanh
@@ -35,6 +35,9 @@ void setup() {
       Serial.write("Module không khởi động được...!");
       while (1){}
     }
+  if (radio.begin() == true ){
+    Serial.write("Khoi dong hoat tat");
+  }
   //------------------------------------------------------
   // Khởi tạo chức năng của module RF24
   radio.begin();
@@ -52,7 +55,7 @@ void setup() {
 
 // 6. Vòng lặp chính
 void loop() {
-
+  if (radio.available() == true){
   // Đọc giá trị joystick 
   xAxis       = analogRead(A1);  // Trục X
   yAxis       = analogRead(A2);  // Trục Y
@@ -82,5 +85,5 @@ void loop() {
   radio.write(&xyData, sizeof(xyData));
 
   delay(20); // Delay 20ms trước khi lặp lại
-
+}
 }
