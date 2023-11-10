@@ -15,12 +15,11 @@
 #include <NewPing.h> 
 #include <Servo.h>
 #include <PS2X_lib.h>
-
 #define PS2_DAT A3 // data
 #define PS2_CMD A2 //command
 #define PS2_SEL A1 // attention
 #define PS2_CLK A0 //clock
-#define SERVO_PIN 9   //Chân servo điều khiển cánh tay - nối 9 Shield V5.0         
+#define SERVO_PIN 8   //Chân servo điều khiển cánh tay - nối 9 Shield V5.0         
 #define MAX_DISTANCE 200 
 #define MAX_SPEED 235 // sets speed of DC  motors
 #define MAX_SPEED_OFFSET 20
@@ -54,6 +53,7 @@ void setup(){
   pinMode(in4Pin,OUTPUT);
   Serial.begin(9600); // Khởi tạo giao tiếp Serial với tốc độ 9600 bps
   myservo.attach(SERVO_PIN); // Kết nối đối tượng servo với chân SERVO_PIN
+  myservo.write(90);
 
   // Khởi tạo bộ điều khiển PS2 và kiểm tra lỗi
   error = ps2x.config_gamepad(PS2_CLK, PS2_CMD, PS2_SEL, PS2_DAT,false, false);
@@ -115,63 +115,75 @@ void loop(){
     //MOVE FORWARD
     if (ps2x.Button(PSB_PAD_UP) == 1){
       tienlen(255);
+      Serial.println("Len");
       delay(200);
       stopRobot();
     }
     //MOVE DOWN
-    if(ps2x.Button(PSB_PAD_DOWN)){
+    if(ps2x.Button(PSB_PAD_DOWN) == 1){
       luixuong(255);
+      Serial.println("Xuong");
       delay(200);
       stopRobot();        
     }
     //TURN RIGHT
-    if(ps2x.Button(PSB_PAD_RIGHT)){
-      sangphai(126);
+    if(ps2x.Button(PSB_PAD_RIGHT) == 1){
+      sangphai(255);
+      Serial.println("Phai");
       delay(200);
       stopRobot();
     }
     // TURN LEFT
-    if(ps2x.Button(PSB_PAD_LEFT)){
-      sangtrai(126);
+    if(ps2x.Button(PSB_PAD_LEFT) == 1){
+      sangtrai(255);
+      Serial.println("Trai");
       delay(200);
       stopRobot();
     }
     //STICK UP
-    if (ry < 118){
-      speedCar = map(ry,0,118,100,255);
+    if ((ly < 75) and (ly > 4)) {
+      speedCar = map(ly,5,75,100,255);
       tienlen(speedCar);
-      delay(200);
+      Serial.println("stick Len");
+      Serial.println(ly);
       stopRobot();
     }
     //STICK DOWN
-    if (ry > 138){
-      speedCar = map(ry,138,255,100,255);
+    if ((ly > 150) and (ly < 240)) {
+      speedCar = map(ly,150,240,100,255);
       luixuong(speedCar);   
-      delay(200);
+      //delay(200);
+      Serial.println("stick Xuong");
+      Serial.println(ly);
       stopRobot();
     }
     //STICK RIGHT
-    if (rx > 128){
-      speedCar = map(rx, 138,255,100,255);
+    if ((rx > 130) and (rx < 240)){
+      speedCar = map(rx,120,240,100,255);
       sangphai(speedCar);
-      delay(200);
+      //delay(200);
+      Serial.println(rx);
+      Serial.println("stick Phai");
       stopRobot();    
     }
     //STCK LEFT
-    if (rx < 128){
-      speedCar = map(rx,0,128,100,255);
-      sangtrai(speedCar);
-      delay(200);
+    if (rx < 120){
+      speedCar = map(rx,0,120,100,255);
+      sangtrai(255);
+      //delay(200);
+      Serial.println("stick Trai"); 
+      Serial.println(rx);
       stopRobot();
     }
     //NÂNG SERVO
-    if (ps2x.ButtonPressed(PSB_BLUE) == 1) {
+    if (ps2x.ButtonPressed(PSB_GREEN)==1) {
       nangservo();
-      stopRobot();
+      //stopRobot();
       }
     //HẠ SERVO
-    if (ps2x.ButtonPressed(PSB_GREEN)) {
+    if (ps2x.ButtonPressed(PSB_BLUE)==1) {
       haservo();
+      //stopRobot();
       }
   }
 }
@@ -199,8 +211,8 @@ void luixuong(int speedCar){
       digitalWrite(in2Pin,LOW);         // LEFT lui
       digitalWrite(in3Pin,HIGH);                    
       digitalWrite(in4Pin,LOW);         // RIGHT lui
-      analogWrite(enAPin, speedCar/2);    
-      analogWrite(enBPin, speedCar/2);   
+      analogWrite(enAPin, speedCar);    
+      analogWrite(enBPin, speedCar);   
 }
 
 void sangtrai(int speedCar){
@@ -208,8 +220,8 @@ void sangtrai(int speedCar){
       digitalWrite(in2Pin,LOW);         // LEFT lui
       digitalWrite(in3Pin,LOW);      
       digitalWrite(in4Pin,HIGH);         // RIGHT tien
-      analogWrite(enAPin, speedCar/2);      
-      analogWrite(enBPin, speedCar/2);
+      analogWrite(enAPin, speedCar);      
+      analogWrite(enBPin, speedCar);
 }
 
 void sangphai(int speedCar){
@@ -217,28 +229,28 @@ void sangphai(int speedCar){
       digitalWrite(in2Pin,HIGH);         // LEFT tien
       digitalWrite(in3Pin,HIGH);      
       digitalWrite(in4Pin,LOW);          // RIGHT lui
-      analogWrite(enAPin, speedCar/2);
-      analogWrite(enBPin, speedCar/2);
+      analogWrite(enAPin, speedCar);
+      analogWrite(enBPin, speedCar);
 }
 
 void nangservo(){
-  myservo.attach(SERVO_PIN);
-  int setservo = 140;
-  setservo = map(setservo,180,0,225,0);
+  
+  int setservo = 70;
+  
   myservo.write(setservo);
   delay(200);
-  myservo.detach();
-  delay(200);
+  Serial.println("Nâng");
+  //myservo.write(90);
+
 }
 
 void haservo(){
-    myservo.attach(SERVO_PIN);  
-      int setservo = 30;
-      setservo = map(setservo,0,180,0,225);
-      myservo.write(setservo);
-      delay(200);
-      myservo.detach();
-      delay(200);
+      int setservo = 120;
+      
+  myservo.write(setservo);
+  delay(200);
+  //myservo.write(90);
+  Serial.println("Hạ");
 }
 
 
