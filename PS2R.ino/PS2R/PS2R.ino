@@ -141,16 +141,16 @@ void loop(){
       stopRobot();
     }
     //STICK UP
-    if ((ly < 75) and (ly > 4)) {
-      speedCar = map(ly,5,75,100,255);
+    if (ly < 120) {
+      speedCar = map(ly,120,0,100,255);
       tienlen(speedCar);
       Serial.println("stick Len");
       Serial.println(ly);
       stopRobot();
     }
     //STICK DOWN
-    if ((ly > 150) and (ly < 240)) {
-      speedCar = map(ly,150,240,100,255);
+    if ((ly > 200)) {
+      speedCar = map(ly,200,255,100,255);
       luixuong(speedCar);   
       //delay(200);
       Serial.println("stick Xuong");
@@ -158,8 +158,8 @@ void loop(){
       stopRobot();
     }
     //STICK RIGHT
-    if ((rx > 130) and (rx < 240)){
-      speedCar = map(rx,120,240,100,255);
+    if ((rx > 200)){
+      speedCar = map(rx,200,255,100,255);
       sangphai(speedCar);
       //delay(200);
       Serial.println(rx);
@@ -239,8 +239,7 @@ void nangservo(){
   
   myservo.write(setservo);
   delay(200);
-  Serial.println("Nâng");
-  //myservo.write(90);
+  myservo.write(90);
 
 }
 
@@ -249,8 +248,7 @@ void haservo(){
       
   myservo.write(setservo);
   delay(200);
-  //myservo.write(90);
-  Serial.println("Hạ");
+  myservo.write(90);
 }
 
 
