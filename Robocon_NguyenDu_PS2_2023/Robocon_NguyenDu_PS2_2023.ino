@@ -20,12 +20,12 @@ Gamepad_Receiver gamepad;
 #define in2Pin 5 // (V5) chân 5 - IN2 (L298N)
 #define in3Pin 4 // (V5) chân 4 - IN3 (L298N)
 #define in4Pin 2 // (V5) chân 2 - IN4 (L298N)
-#define enBPin 3 // (V5) chân 3 - ENB (L298N)
+#define enBPin 3 // (V5) chân 3 - ENB (L298N
         
 Servo myservo1;     //Servo điều khiển cánh tay
 //Servo myservo2;     //Servo điều khiển tay kẹp
 
-int speedCar    = 150;     // toc do 50 - 255.
+int speedCar    = 255;     // toc do 50 - 255.
 int speed_Coeff = 2;       // he so suy giam <=> giam may lan toc do
 int setservo1 = 0;
 //int setservo2 = 0;
@@ -33,12 +33,15 @@ int speedJS = 0;
 
 void setup() {
   //Dừng robot
-  stopRobot();  
+  stopRobot();
   Serial.println("Robotic THPT Nguyễn Du - Begin!");
   //Khoi tao Servo
   myservo1.attach(SERVO1_PIN);         //servo1 nối chân số 8 Shield V5.0
   //myservo1.write(setservo1);
   myservo1.write(90);
+  //myservo2.attach(SERVO2_PIN);         //servo2 nối chân số 9 Shield V5.0
+  //myservo2.write(setservo2);
+  //myservo2.write(90);
 
   //Khoi tao L298N
   pinMode(enAPin, OUTPUT);
@@ -64,28 +67,28 @@ void loop() {
       //Joystick bên trái
     if (gamepad.aLx>=5 and gamepad.aLx<=512) {
       Serial.print("Joy trái qua phải ");
-      speedJS = map(gamepad.aLx,5,512,50,250);
+      speedJS = map(gamepad.aLx,5,512,150,250);
       Serial.print(speedJS); 
       RePhai_Line(speedJS,speedJS/speed_Coeff); 
       stopRobot();
       }
     if (gamepad.aLx<=-5 and gamepad.aLx>=-512) {
       Serial.print("Joy trái qua trái "); 
-      speedJS = map(gamepad.aLx,-5,-512,50,250);
+      speedJS = map(gamepad.aLx,-5,-512,150,250);
       Serial.print(speedJS); 
       ReTrai_Line(speedJS/speed_Coeff,speedJS); 
       stopRobot();
       }
     if (gamepad.aLy>=5 and gamepad.aLy<=512) {
       Serial.print("Joy trái xuống dưới "); 
-      speedJS = map(gamepad.aLy,5,512,50,250);
+      speedJS = map(gamepad.aLy,5,512,150,250);
       Serial.print(speedJS); 
       Lui_Line(speedJS,speedJS); 
       stopRobot();
       }
     if (gamepad.aLy<=-5 and gamepad.aLy>=-512) {
       Serial.print("Joy trái lên trên "); 
-      speedJS = map(gamepad.aLy,-5,-512,50,250);
+      speedJS = map(gamepad.aLy,-5,-512,150,250);
       Serial.print(speedJS); 
       Tien_Line(speedJS,speedJS); 
       stopRobot();
@@ -94,29 +97,29 @@ void loop() {
     //Joystick bên trái
     if (gamepad.aRx>=5 and gamepad.aRx<=512) {
       Serial.print("Joy phải qua phải ");
-      speedJS = map(gamepad.aRx,5,512,50,250);
+      speedJS = map(gamepad.aRx,5,512,150,250);
       RePhai_Line(speedJS,speedJS/speed_Coeff); 
       stopRobot();
       }
     if (gamepad.aRx<=-5 and gamepad.aRx>=-512) { 
       Serial.print("Joy phải qua trái "); 
-      speedJS = map(gamepad.aRx,-5,-512,50,250);
+      speedJS = map(gamepad.aRx,-5,-512,150,250);
       ReTrai_Line(speedJS/speed_Coeff,speedJS); 
       stopRobot();
       }  
     if (gamepad.aRy>=5 and gamepad.aRy<=512) { 
       Serial.print("Joy phải xuống dưới "); 
-      speedJS = map(gamepad.aRy,5,512,50,250);
+      speedJS = map(gamepad.aRy,5,512,150,250);
       Lui_Line(speedJS,speedJS); 
       stopRobot();}
     if (gamepad.aRy<=-5 and gamepad.aRy>=-512) { 
       Serial.print("Joy phải lên trên ");
-       speedJS = map(gamepad.aRy,-5,-512,50,250); 
+       speedJS = map(gamepad.aRy,-5,-512,150,250); 
        Tien_Line(speedJS,speedJS); 
        stopRobot();}
 
     //Các nút điều hướng bên trái
-    if (gamepad.dpad_left!=0) {Serial.print("QUA TRÁI "); ReTrai(); stopRobot();}
+    if (gamepad.dpad_left==1) {Serial.print("QUA TRÁI "); ReTrai(); stopRobot();}
     if (gamepad.dpad_right==1) {Serial.print("QUA PHẢI "); RePhai(); stopRobot();}
     if (gamepad.dpad_up==1) {Serial.print("LÊN TRÊN "); Tien(); stopRobot();}
     if (gamepad.dpad_down==1) {Serial.print("XUỐNG DƯỚI "); Lui(); stopRobot();}
@@ -127,6 +130,11 @@ void loop() {
     //if (gamepad.x==1) {Serial.print("Nút hình vuông "); Serial.println(gamepad.x);}
     if (gamepad.y==1) {Serial.print("Nút tam giác "); Nang();}
 
+    //Nut L2 R2
+    if (gamepad.r2 == 1) {Serial.print("QUA PHẢi "); PhaiNhe(); stopRobot();}
+    if (gamepad.l2 == 1) {Serial.print("QUA TRAI"); TraiNhe(); stopRobot();}
+    if (gamepad.l1 == 1) {Serial.print("Nhich Len"); NhichLen(); stopRobot();}
+    if (gamepad.r1 == 1) {Serial.print("Nhich Xuong"); NhichXuong(); stopRobot();}
     }
  
  
@@ -201,14 +209,14 @@ void stopRobot(){
 void Ha(){
   int tocdo = 80; //Theo chiều kim đồng hồ
   myservo1.write(tocdo);
-  delay(200);
+  delay(100);
   myservo1.write(90);  //Dừng servo nếu không Servo xoay tròn
   Serial.println("Hạ");
 }
 void Nang(){
   int tocdo = 100; //Theo chiều kim đồng hồ
   myservo1.write(tocdo);
-  delay(200);
+  delay(100);
   myservo1.write(90); //Dừng servo nếu không Servo xoay tròn
   Serial.println("Nâng");
   
@@ -252,5 +260,49 @@ void Lui_Line(int speedL,int speedR){
   analogWrite(enBPin, speedR);
   Serial.println("Lùi lại");
   delay(200);
+}
+
+void PhaiNhe(){
+        digitalWrite(in1Pin,LOW);      
+      digitalWrite(in2Pin,HIGH);         // LEFT lui
+      digitalWrite(in3Pin,HIGH);      
+      digitalWrite(in4Pin,LOW);         // RIGHT tien
+      analogWrite(enAPin, 180);
+      analogWrite(enBPin, 180);
+      Serial.println("Rẽ Phai");
+      delay(200);
+}
+
+void TraiNhe(){
+  digitalWrite(in1Pin,HIGH);      
+  digitalWrite(in2Pin,LOW);         // LEFT lui
+  digitalWrite(in3Pin,LOW);      
+  digitalWrite(in4Pin,HIGH);         // RIGHT tien
+  analogWrite(enAPin, 180);
+  analogWrite(enBPin, 180);
+  Serial.println("Rẽ trái");
+  delay(200);  
+}
+
+void NhichLen(){
+    digitalWrite(in1Pin,LOW);      
+  digitalWrite(in2Pin,HIGH);         // LEFT tien
+  digitalWrite(in3Pin,LOW);      
+  digitalWrite(in4Pin,HIGH);         // RIGHT tien
+  analogWrite(enAPin, 150);
+  analogWrite(enBPin, 150);
+  Serial.println("Tiến lên");
+  delay(80);
+}
+
+void NhichXuong(){
+  digitalWrite(in1Pin,HIGH);      
+  digitalWrite(in2Pin,LOW);         // LEFT lui
+  digitalWrite(in3Pin,HIGH);      
+  digitalWrite(in4Pin,LOW);         // RIGHT lui         
+  analogWrite(enAPin, 150);
+  analogWrite(enBPin, 150);
+  Serial.println("Lùi lại");
+  delay(80);
 }
 
