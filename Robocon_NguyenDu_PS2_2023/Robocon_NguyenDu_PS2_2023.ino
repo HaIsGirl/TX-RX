@@ -1,6 +1,5 @@
 /*****************************/
 // CHUONG TRINH DIEU KHIEN ROBOTICS THPT NGUYEN DU  //
-// Create by Le Quyen                               //
 // Date: 08/11/2023                                 //
 /*****************************/
 #include <Wire.h>
